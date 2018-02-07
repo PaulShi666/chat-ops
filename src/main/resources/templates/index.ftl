@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>智能运维平台</title>
 
-    <link rel="stylesheet" href="/libs/normalize/5.0.0/normalize.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
     <link rel='stylesheet prefetch'
           href='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css'>
     <link rel="stylesheet" href="/css/index.css">
@@ -115,9 +115,24 @@
 
     </div>
 </div>
-<script src='/libs/jquery/3.1.0/jquery.min.js'></script>
-<script src='/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js'></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js'></script>
+<script>
+    ws = new WebSocket("ws://webSocketServer/sockjs/1");
 
+    ws.onopen = function () {
+        console.log('Info: connection opened.');
+    };
+
+    ws.onmessage = function (event) {
+        console.log('Received: ' + event.data);
+    };
+
+    ws.onclose = function (event) {
+        console.log('Info: connection closed.');
+    };
+
+</script>
 
 </body>
 
