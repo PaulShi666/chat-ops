@@ -57,7 +57,6 @@
     ws.onopen = function () {
         console.log('Info: connection opened.');
     };
-
     ws.onmessage = function (event) {
         var html = ' <li class="left clearfix">\n' +
                 '                            <span class="chat-img pull-left">\n' +
