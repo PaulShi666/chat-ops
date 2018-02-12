@@ -1,5 +1,8 @@
 package com.sse.chatops.websocket;
 
+import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.sse.chatops.shell.Shell;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.OnClose;
@@ -8,6 +11,7 @@ import javax.websocket.OnOpen;
 import javax.websocket.Session;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArraySet;
 
 @ServerEndpoint(value = "/websocket")
@@ -32,7 +36,22 @@ public class MyWebSocket {
         System.out.println("有新连接加入！当前在线人数为" + getOnlineCount());
         try {
             sendMessage("你好，我是运维机器人");
+
+            sendMessage(
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看CPU</a></p>" +
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看磁盘信息</a></p>"+
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看网络负载</a></p>"+
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看内存</a></p>" +
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看进程总数</a></p>" +
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看IP地址</a></p>"+
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看当前NGINX监控数据</a></p>" +
+                     "<p><a class=\"J_SendText\" href=\"javascript:;\">查看昨日NGINX监控数据</a></p>"
+
+            );
             //sendMessage(CommonConstant.CURRENT_WANGING_NUMBER.toString());
+
+//            "<p><a href=\"http://10.112.2.109/report.html\">查看当前NGINX监控数据</a></p>" +
+//                    "<p><a href=\"http://10.112.2.109/report.html\">查看昨日监控数据</p>"
         } catch (IOException e) {
             System.out.println("IO异常");
         }
@@ -56,15 +75,26 @@ public class MyWebSocket {
     public void onMessage(String message, Session session) {
         System.out.println("来自客户端的消息:" + message);
 
-        String res = "";
+//        String res = "";
+//
+//        switch (message){
+//
+//            case "查看昨天":
+//                res = "<a href=\"http://10.112.2.109/test.html\">点击查看昨天NGINX监控数据";
+//                break;
+//                default:
+//                    res = "无法查询到该命令";
+//
+//        }
+        Shell shell = new Shell("10.112.2.109", "root", "Dcp@Admin");
+        shell.execute(message);
+        //shell.execute("ps -e  -o \"%C  : %p : %z : %a\"|sort -k5 -nr");
 
-        switch (message){
-            case "孙若易好漂亮":
-                res = "对啊对吧你怎么知道";
-                break;
-            case "你不是机器人吗":
-                res = "不，我是孙若易肚子里的蛔虫呀";
-        }
+        ArrayList<String> stdout = shell.getStandardOutput();
+
+
+        String res = JSON.toJSONString(stdout);
+
         //群发消息
         for (MyWebSocket item : webSocketSet) {
             try {

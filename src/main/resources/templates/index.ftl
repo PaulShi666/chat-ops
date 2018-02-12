@@ -17,19 +17,19 @@
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <span class="glyphicon glyphicon-comment"></span> 智能运维平台
-                <div class="btn-group pull-right">
-                    <button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">
-                        <span class="glyphicon glyphicon-chevron-down"></span>
-                    </button>
-                    <ul class="dropdown-menu slidedown">
-                        <li><a href="#"><span class="glyphicon glyphicon-refresh"></span>Refresh</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-ok-sign"></span>Available</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-remove"></span>Busy</a></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-time"></span>Away</a></li>
-                        <li class="divider"></li>
-                        <li><a href="#"><span class="glyphicon glyphicon-off"></span>Sign Out</a></li>
-                    </ul>
-                </div>
+            <#--<div class="btn-group pull-right">-->
+            <#--<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown">-->
+            <#--<span class="glyphicon glyphicon-chevron-down"></span>-->
+            <#--</button>-->
+            <#--<ul class="dropdown-menu slidedown">-->
+            <#--<li><a href="#"><span class="glyphicon glyphicon-refresh"></span>Refresh</a></li>-->
+            <#--<li><a href="#"><span class="glyphicon glyphicon-ok-sign"></span>Available</a></li>-->
+            <#--<li><a href="#"><span class="glyphicon glyphicon-remove"></span>Busy</a></li>-->
+            <#--<li><a href="#"><span class="glyphicon glyphicon-time"></span>Away</a></li>-->
+            <#--<li class="divider"></li>-->
+            <#--<li><a href="#"><span class="glyphicon glyphicon-off"></span>Sign Out</a></li>-->
+            <#--</ul>-->
+            <#--</div>-->
             </div>
             <div class="panel-body">
                 <ul class="chat">
@@ -61,52 +61,69 @@
     ws.onmessage = function (event) {
         var html = ' <li class="left clearfix">\n' +
                 '                            <span class="chat-img pull-left">\n' +
-                '                                <img src="http://placehold.it/50/55C1E7/fff&text=JS" alt="User Avatar"\n' +
+                '                                <img src="/img/hubot-avatar@2x.png" width="50" height="50" alt="User Avatar"\n' +
                 '                                     class="img-circle"/>\n' +
                 '            </span>\n' +
                 '                        <div class="chat-body clearfix">\n' +
                 '                            <div class="header">\n' +
                 '                                <strong class="primary-font">运维小助手</strong>\n' +
                 '                                <small class="pull-right text-muted">\n' +
-                '                                    <span class="glyphicon glyphicon-time"></span>12 mins ago\n' +
+                '                                    <span class="glyphicon glyphicon-time"></span>今天\n' +
                 '                                </small>\n' +
                 '                            </div>\n' +
-                '                            <p>\n' +
-                                                event.data +
-                '                            </p>\n' +
+                '                            <div>\n' +
+                event.data +
+                '                            </div>\n' +
                 '                        </div>\n' +
                 '                    </li>';
 
         $(".chat").append(html);
+        $(".J_SendText").on("click", function(e){
+            var text = e.target.innerText;
+            sendMessage(text);
+        });
+
         console.log('Received: ' + event.data);
     };
 
     ws.onclose = function (event) {
         console.log('Info: connection closed.');
     };
-    $("#btn-chat").on("click",function (e) {
 
-        var text = $("#btn-input").val();
+    $(".btn-input").on('keypress', function (e) {
+        if (e.keyCode === 13) {
+            handleBtnInput(e);
+        }
+    });
+    $("#btn-chat").on("click", handleBtnInput);
+
+    function handleBtnInput(e) {
+        var btnInputDom = $("#btn-input");
+        var text = btnInputDom.val();
+
+        sendMessage(text);
+
+        btnInputDom.val("");
+    }
+    function sendMessage(text){
         ws.send(text);
-        var html =' <li class="right clearfix"><span class="chat-img pull-right">\n' +
+        var html = ' <li class="right clearfix"><span class="chat-img pull-right">\n' +
                 '                            <img src="http://placehold.it/50/FA6F57/fff&text=BP" alt="User Avatar" class="img-circle"/>\n' +
                 '                        </span>\n' +
                 '                        <div class="chat-body clearfix">\n' +
                 '                            <div class="header">\n' +
-                '                                <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>15 mins ago\n' +
+                '                                <small class=" text-muted"><span class="glyphicon glyphicon-time"></span>今天\n' +
                 '                                </small>\n' +
-                '                                <strong class="pull-right primary-font">Bhaumik Patel</strong>\n' +
+                '                                <strong class="pull-right primary-font">管理员</strong>\n' +
                 '                            </div>\n' +
                 '                            <p>\n' +
-                                                text +
+                text +
                 '                            </p>\n' +
                 '                        </div>\n' +
                 '                    </li>';
 
         $(".chat").append(html);
-    }) ;
-
-
+    }
 
 </script>
 
