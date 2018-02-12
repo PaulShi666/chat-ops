@@ -78,7 +78,7 @@
                 '                    </li>';
 
         $(".chat").append(html);
-        $(".J_SendText").on("click", function(e){
+        $(".J_SendText").unbind("click").on("click", function(e){
             var text = e.target.innerText;
             sendMessage(text);
         });
