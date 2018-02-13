@@ -10,6 +10,7 @@ public class MessageService {
     @Resource
     private MessageMapper messageMapper;
 
+
     public Message getMessage(String text){
         return messageMapper.selectMessageByText(text);
     }
