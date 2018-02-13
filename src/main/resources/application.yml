@@ -1,0 +1,15 @@
+# Spring settings
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/chat_ops?characterEncoding=UTF-8
+    username: root
+    password: 111111
+# Server settings
+server:
+  port: 8080
+  compression:
+    enabled: true
+# mybatis settings
+#mybatis:
+#  type-aliases-package: com.sse.chatops.dao
+#  mapper-locations: classpath:dao/*.xml

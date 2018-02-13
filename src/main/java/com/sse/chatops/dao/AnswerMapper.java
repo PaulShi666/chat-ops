@@ -1,5 +1,10 @@
 package com.sse.chatops.dao;
 
+import com.sse.chatops.model.Answer;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+
+@Mapper
 public interface AnswerMapper {
-    Answer SelectAnswerByMessageId();
+    Answer selectAnswerByMessageId(Integer messageId);
 }

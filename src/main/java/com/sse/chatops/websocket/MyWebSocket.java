@@ -2,9 +2,14 @@ package com.sse.chatops.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.sse.chatops.model.Answer;
+import com.sse.chatops.model.Message;
+import com.sse.chatops.service.AnswerService;
+import com.sse.chatops.service.MessageService;
 import com.sse.chatops.shell.Shell;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
 import javax.websocket.OnOpen;
@@ -17,6 +22,12 @@ import java.util.concurrent.CopyOnWriteArraySet;
 @ServerEndpoint(value = "/websocket")
 @Component
 public class MyWebSocket {
+    @Resource
+    private MessageService messageService;
+
+    @Resource
+    private AnswerService answerService;
+
     //静态变量，用来记录当前在线连接数。应该把它设计成线程安全的。
     private static int onlineCount = 0;
 
@@ -75,6 +86,10 @@ public class MyWebSocket {
     public void onMessage(String message, Session session) {
         System.out.println("来自客户端的消息:" + message);
 
+        Message msg  = messageService.getMessage(message);
+
+        Answer answer = answerService.getAnswer(msg.getId());
+
 //        String res = "";
 //
 //        switch (message){
@@ -87,7 +102,7 @@ public class MyWebSocket {
 //
 //        }
         Shell shell = new Shell("10.112.2.109", "root", "Dcp@Admin");
-        shell.execute(message);
+        shell.execute(answer.getScript());
         //shell.execute("ps -e  -o \"%C  : %p : %z : %a\"|sort -k5 -nr");
 
         ArrayList<String> stdout = shell.getStandardOutput();

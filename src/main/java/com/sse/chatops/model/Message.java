@@ -3,8 +3,7 @@ package com.sse.chatops.model;
 import lombok.Data;
 
 @Data
-public class Answer {
+public class Message {
     private Integer Id;
-    private Integer messageId;
-    private String script;
+    private String text;
 }
