@@ -13,4 +13,8 @@ public class AnswerService {
     public Answer getAnswer(Integer messageId){
         return answerMapper.selectAnswerByMessageId(messageId);
     }
+
+    public int insertAnswer(Answer answer){
+        return answerMapper.insertAnswer(answer);
+    }
 }

@@ -7,4 +7,6 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface AnswerMapper {
     Answer selectAnswerByMessageId(Integer messageId);
+
+    int insertAnswer(Answer answer);
 }
